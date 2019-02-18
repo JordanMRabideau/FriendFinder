@@ -175,5 +175,45 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $("#submit").click(function(event) {
+            event.preventDefault();
+            // console.log($("#q1").val());
+            function validate() {
+                var isValid = true;
+                
+                $(".select").each(function(){
+                    if ($(this).val() === null) {
+                        isValid = false;
+                        alert("Please answer all questions")
+                    }
+                })
+                return isValid;
+            }
+            
+            if (validate()) {
+                var newUser = {
+                    name: $("#name").val(),
+                    image: $("#pic").val(),
+                    scores: [
+                        $("#q1").val(),
+                        $("#q2").val(),
+                        $("#q3").val(),
+                        $("#q4").val(),
+                        $("#q5").val(),
+                        $("#q6").val(),
+                        $("#q7").val(),
+                        $("#q8").val(),
+                        $("#q9").val(),
+                        $("#q10").val(),
+                    ]
+                };
+                $.post("/api/friends", newUser).then(function(data) {
+                    console.log(data);
+                })
+            }
+        })
+    </script>
 </body>
 </html>

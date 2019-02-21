@@ -7,9 +7,10 @@ module.exports = function(app) {
     
     app.post("/api/friends", function(req, res){
         var user = req.body;
+        var match;
         for (i in user.scores) {
             user.scores[i] = parseInt(user.scores[i]);
-        }
+        } 
         var differenceArray = [];
         function compatCheck() {
             for (i in friends) {
@@ -24,7 +25,7 @@ module.exports = function(app) {
             console.log("minimum difference: " + minDif);
             var matchIndex = differenceArray.indexOf(minDif)
             console.log("match index: " + matchIndex);
-            var match = friends[matchIndex];
+            match = friends[matchIndex];
             console.log(match);
             
         }

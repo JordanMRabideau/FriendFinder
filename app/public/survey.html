@@ -28,7 +28,7 @@
         <h3>
             <strong>Question 1</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I tend to stand out in a crowd</h4>
         <select class="select" data-placeholder="Select an option" id="q1">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -41,7 +41,7 @@
         <h3>
             <strong>Question 2</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I try to plan for every occasion</h4>
         <select class="select" data-placeholder="Select an option" id="q2">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -54,7 +54,7 @@
         <h3>
             <strong>Question 3</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I think that we are alone in the universe</h4>
         <select class="select" data-placeholder="Select an option" id="q3">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -67,7 +67,7 @@
         <h3>
             <strong>Question 4</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I feel at home in water</h4>
         <select class="select" data-placeholder="Select an option" id="q4">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -80,7 +80,7 @@
         <h3>
             <strong>Question 5</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I enjoy solving difficult puzzles</h4>
         <select class="select" data-placeholder="Select an option" id="q5">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -93,7 +93,7 @@
         <h3>
             <strong>Question 6</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I work well alone</h4>
         <select class="select" data-placeholder="Select an option" id="q6">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -106,7 +106,7 @@
         <h3>
             <strong>Question 7</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I prefer the cold</h4>
         <select class="select" data-placeholder="Select an option" id="q7">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -119,7 +119,7 @@
         <h3>
             <strong>Question 8</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>Family is extremely important to me</h4>
         <select class="select" data-placeholder="Select an option" id="q8">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -132,7 +132,7 @@
         <h3>
             <strong>Question 9</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I tend to be very active</h4>
         <select class="select" data-placeholder="Select an option" id="q9">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -145,7 +145,7 @@
         <h3>
             <strong>Question 10</strong>
         </h3>
-        <h4>Placeholder</h4>
+        <h4>I'm a believer in the supernatural</h4>
         <select class="select" data-placeholder="Select an option" id="q10">
             <option selected disabled>Select an option</option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -163,6 +163,23 @@
             Submit
         </button>
 
+        <div class="modal fade" id="matchModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document" style="width: 800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="matchModalLabel">
+                            Meet your new friend!
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </h2>
+                        
+                    </div>
+                    <div class="modal-body">
+                        <h2 id="matchName"></h2>
+                        <img id="matchImg" src="http://www.hmcoloringpages.com/wp-content/uploads/man-portrait-silhouette.gif" style="max-width: inherit;"> 
+                    </div>
+                </div>
+            </div>
+        </div>
         <hr>
 
         <div class="footer">
@@ -180,13 +197,17 @@
         $("#submit").click(function(event) {
             event.preventDefault();
             // console.log($("#q1").val());
+
             function validate() {
                 var isValid = true;
-                
                 $(".select").each(function(){
                     if ($(this).val() === null) {
                         isValid = false;
-                        alert("Please answer all questions")
+                    }
+                })
+                $(".form-control").each(function(){
+                    if ($(this).val() === "") {
+                        isValid = false
                     }
                 })
                 return isValid;
@@ -209,9 +230,17 @@
                         $("#q10").val(),
                     ]
                 };
-                $.post("/api/friends", newUser).then(function(data) {
+                $.post("/api/friends", newUser, function(data) {
                     console.log(data);
+                    $("#matchName").text(data.name);
+                    $("#matchImg").attr("src", data.image)
+                    $("#matchModal").modal("toggle");
+                    $(".form-control").val("");
+                    $(".select").val("");
                 })
+
+            } else {
+                alert("Please answer all of the questions.")
             }
         })
     </script>
